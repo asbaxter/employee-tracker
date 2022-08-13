@@ -35,13 +35,13 @@ function promptUser(){
         allRoles();
       }
       else if(menu == "Add Role"){
-        console.log("add rolle coming soon");
+        addRole();
       }
       else if (menu == "View all Departments"){
         allDepartments();
       }
       else if(menu == "Add Department"){
-        console.log("add deparment coming soon")
+        addDepartment();
       }
       else {
         process.exit()
@@ -126,6 +126,35 @@ function allRoles(){
         });
 }
 
+function addRole(){
+  inquirer
+  .prompt([
+    {
+      type: "text",
+      message: "What is the name of this new role: ",
+      name: 'newRole'
+    },
+    {
+      type: "text",
+      message: "What is the salary of this new roll: ",
+      name: 'newRoleSalary'
+    },
+    {
+      type: "text",
+      message: "What is the ID of this role department: ",
+      name: 'newRoleDepartment'
+    }
+  ]).then( function (answer){
+    const sql = `INSERT INTO role (title, salary, department_id) VALUES ('${answer.newRole}', '${answer.newRoleSalary}', '${answer.newRoleDepartment}');`;
+        db.query(sql, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          promptUser();
+      });
+  });
+
+}
+
 // -------------------------  department functions -------------------------------------
 function allDepartments(){
   const sql = `SELECT * FROM department`;
@@ -134,6 +163,26 @@ function allDepartments(){
           console.table(res);
           promptUser();
         });
+}
+
+function addDepartment(){
+  inquirer
+  .prompt([
+    {
+      type: "text",
+      message: "What is the name of this new department",
+      name: 'newDepartment'
+    },
+  ]).then( function (answer){
+    const sql = `INSERT INTO department (name) VALUES ('${answer.newDepartment}');`;
+        db.query(sql, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          promptUser();
+      });
+  });
+
+
 }
 
 promptUser();
