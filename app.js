@@ -29,7 +29,7 @@ function promptUser(){
         addEmployee();
       }
       else if(menu == "Update Employee Role"){
-        console.log("Update Employee role comming soon")
+        updateEmployeeRole();
       }
       else if(menu == "View all Roles"){
         allRoles();
@@ -90,7 +90,30 @@ function addEmployee(){
           promptUser();
       });
   })
+}
 
+function updateEmployeeRole(){
+  inquirer
+  .prompt([
+    {
+      type: "text",
+      message: "What is the ID of the Employee you would like to atler: ",
+      name: 'alteredEmployee'
+    },
+    {
+      type: "text",
+      message: "What is this employees new role ID: ",
+      name: 'alteredRoleID'
+    }
+  ]).then( function (answer){
+    const sql = `UPDATE employee SET role_id = '${answer.alteredRoleID}' WHERE id = '${answer.alteredEmployee}'`;
+        db.query(sql, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          promptUser();
+      });
+  })
+  
 }
 
 // -------------------------  role functions -------------------------------------
