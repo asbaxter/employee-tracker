@@ -1,11 +1,6 @@
 const inquirer = require("inquirer");
 const db = require("./db/connection");
-
-// db.connect((err) => {
-//   if (err) throw err;
-//   console.log("Database connected.");
-//   options();
-// });
+const cTable = require('console.table');
 
 function promptUser(){
   inquirer
@@ -13,23 +8,39 @@ function promptUser(){
       {
         type: "list",
         message: "What would you like to do:",
-        choices: ["View all Employees", "View all Roles", "view all Departments"],
+        choices: ["View all Employees", "View all Roles", "View all Departments"],
         name: "menu"
       }
     ])
     .then(function ({ menu }) {
       if (menu == "View all Employees"){
-        console.log("employee")
+        const sql = `SELECT * FROM employee`;
+        db.query(sql, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          promptUser();
+      });
       }
       else if(menu == "View all Roles"){
-        console.log("roles")
+        const sql = `SELECT * FROM role`;
+        db.query(sql, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          promptUser();
+      });
+      }
+      else if (menu == "View all Departments"){
+        const sql = `SELECT * FROM department`;
+        db.query(sql, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          promptUser();
+        });
       }
       else {
-        console.log("department")
+        console.log("How did you even select an invalid option?")
       }
     })
-
-
 }
 
 promptUser();
