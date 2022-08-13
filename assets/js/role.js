@@ -4,7 +4,12 @@ const promptUser = require('../../app')
 const cTable = require('console.table');
 
 function allRoles(){
-    const sql = `SELECT * FROM role`;
+    const sql = `SELECT role.*, department.name 
+                AS department_name 
+                FROM role
+                LEFT JOIN department 
+                ON role.department_id = department.id;`;
+
           db.query(sql, (err, res) => {
             if (err) throw err;
             console.table(res);

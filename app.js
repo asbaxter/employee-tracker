@@ -35,90 +35,21 @@ function promptUser(){
         employee.updateEmployeeRole();
       }
       else if(menu == "View all Roles"){
-        allRoles();
+        role.allRoles();
       }
       else if(menu == "Add Role"){
-        addRole();
+        role.addRole();
       }
       else if (menu == "View all Departments"){
-        allDepartments();
+        department.allDepartments();
       }
       else if(menu == "Add Department"){
-        addDepartment();
+        department.addDepartment();
       }
       else {
         process.exit()
       }
     })
-}
-
-// -------------------------  role functions -------------------------------------
-function allRoles(){
-  const sql = `SELECT * FROM role`;
-        db.query(sql, (err, res) => {
-          if (err) throw err;
-          console.table(res);
-          promptUser();
-        });
-}
-
-function addRole(){
-  inquirer
-  .prompt([
-    {
-      type: "text",
-      message: "What is the name of this new role: ",
-      name: 'newRole'
-    },
-    {
-      type: "text",
-      message: "What is the salary of this new roll: ",
-      name: 'newRoleSalary'
-    },
-    {
-      type: "text",
-      message: "What is the ID of this role department: ",
-      name: 'newRoleDepartment'
-    }
-  ]).then( function (answer){
-    const sql = `INSERT INTO role (title, salary, department_id) VALUES ('${answer.newRole}', '${answer.newRoleSalary}', '${answer.newRoleDepartment}');`;
-        db.query(sql, (err, res) => {
-          if (err) throw err;
-          console.table(res);
-          promptUser();
-      });
-  });
-
-}
-
-// -------------------------  department functions -------------------------------------
-function allDepartments(){
-  const sql = `SELECT * FROM department`;
-        db.query(sql, (err, res) => {
-          if (err) throw err;
-          console.table(res);
-          promptUser();
-        });
-}
-
-function addDepartment(){
-  inquirer
-  .prompt([
-    {
-      type: "text",
-      message: "What is the name of this new department",
-      name: 'newDepartment'
-    },
-  ]).then( function (answer){
-    const sql = `INSERT INTO department (name) VALUES ('${answer.newDepartment}');`;
-        db.query(sql, (err, res) => {
-          if (err) throw err;
-          console.table(res);
-          promptUser();
-      });
-  });
-
-
 }
 
 promptUser();
