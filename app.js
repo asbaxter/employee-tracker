@@ -1,6 +1,9 @@
 const inquirer = require("inquirer");
 const db = require("./db/connection");
 const cTable = require('console.table');
+const employee = require('./assets/js/employee');
+const department = require('./assets/js/department');
+const role = require('./assets/js/role');
 
 function promptUser(){
   inquirer
@@ -23,13 +26,13 @@ function promptUser(){
     ])
     .then(function ({ menu }) {
       if (menu == "View all Employees"){
-        allEmployees();
+        employee.allEmployees();
       }
       else if(menu == "Add Employee"){
-        addEmployee();
+        employee.addEmployee();
       }
       else if(menu == "Update Employee Role"){
-        updateEmployeeRole();
+        employee.updateEmployeeRole();
       }
       else if(menu == "View all Roles"){
         allRoles();
@@ -47,73 +50,6 @@ function promptUser(){
         process.exit()
       }
     })
-}
-
-// -------------------------  employee functions -------------------------------------
-function allEmployees(){
-  const sql = `SELECT * FROM employee`;
-        db.query(sql, (err, res) => {
-          if (err) throw err;
-          console.table(res);
-          promptUser();
-      });
-}
-
-function addEmployee(){
-  inquirer
-  .prompt([
-    {
-      type: "text",
-      message: "What is the employees first name: ",
-      name: 'newFirstName'
-    },
-    {
-      type: "text",
-      message: "What is the employees last name: ",
-      name: 'newLastName'
-    },
-    {
-      type: "text",
-      message: "What is the employees role ID: ",
-      name: 'newRoleID'
-    },
-    {
-      type: "text",
-      message: "What is thier manager's id: ",
-      name: 'newManagerID'
-    },
-  ]).then( function (answer){
-    const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answer.newFirstName}', '${answer.newLastName}', '${answer.newRoleID}', '${answer.newManagerID}');`;
-        db.query(sql, (err, res) => {
-          if (err) throw err;
-          console.table(res);
-          promptUser();
-      });
-  })
-}
-
-function updateEmployeeRole(){
-  inquirer
-  .prompt([
-    {
-      type: "text",
-      message: "What is the ID of the Employee you would like to atler: ",
-      name: 'alteredEmployee'
-    },
-    {
-      type: "text",
-      message: "What is this employees new role ID: ",
-      name: 'alteredRoleID'
-    }
-  ]).then( function (answer){
-    const sql = `UPDATE employee SET role_id = '${answer.alteredRoleID}' WHERE id = '${answer.alteredEmployee}'`;
-        db.query(sql, (err, res) => {
-          if (err) throw err;
-          console.table(res);
-          promptUser();
-      });
-  })
-  
 }
 
 // -------------------------  role functions -------------------------------------
@@ -186,3 +122,5 @@ function addDepartment(){
 }
 
 promptUser();
+
+exports.promptUser = promptUser;
