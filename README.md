@@ -1,5 +1,7 @@
 # employee-tracker
 
+[Link To Video Demo](https://watch.screencastify.com/v/qT6vSob7dP8VVKFDb1TO)
+
 ![alt text](./assets/images/employee_tracker_pic.png)
 
 ## User Story
